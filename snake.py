@@ -2,15 +2,15 @@ import pygame
 import sys
 import random
 
-# Initialize Pygame
+# Pygame ni initialize cheyyi
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 600, 400
-GRID_SIZE = 20
-FPS = 10
+WIDTH, HEIGHT = 600, 400  # Window anta peru, paniyaalu
+GRID_SIZE = 20  # Okati grid cell size
+FPS = 10  # Prati second lo frames
 
-# Colors
+# Rangulu
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -18,13 +18,13 @@ GREEN = (0, 255, 0)
 # Snake class
 class Snake:
     def __init__(self):
-        self.length = 1
-        self.positions = [((WIDTH // 2), (HEIGHT // 2))]
+        self.length = 1  # Snake length
+        self.positions = [((WIDTH // 2), (HEIGHT // 2))]  # Position of snake
         self.direction = random.choice([0, 1, 2, 3])  # 0: up, 1: right, 2: down, 3: left
-        self.color = GREEN
+        self.color = GREEN  # Snake color
 
     def get_head_position(self):
-        return self.positions[0]
+        return self.positions[0]  # Head position of snake
 
     def update(self):
         cur = self.get_head_position()
@@ -33,12 +33,11 @@ class Snake:
         new = (((cur[0] + (x * GRID_SIZE)) % WIDTH), (cur[1] + (y * GRID_SIZE)) % HEIGHT)
 
         if len(self.positions) > 2 and new in self.positions[2:]:
-            self.reset()
+            self.reset()  # Snake ni reset cheseyi if it collides with itself
         else:
             self.positions.insert(0, new)
             if len(self.positions) > self.length:
                 self.positions.pop()
-
 
     def reset(self):
         self.length = 1
@@ -76,9 +75,10 @@ def main():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                pygame.quit()  # Quit the game if window is closed
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
+                # Change snake direction based on arrow key pressed
                 if event.key == pygame.K_UP:
                     snake.direction = (0, -1)
                 elif event.key == pygame.K_DOWN:
@@ -88,17 +88,17 @@ def main():
                 elif event.key == pygame.K_RIGHT:
                     snake.direction = (1, 0)
 
-        snake.update()
+        snake.update()  # Update snake position
         if snake.get_head_position() == food.position:
-            snake.length += 1
-            food.randomize_position()
+            snake.length += 1  # Increase snake length when it eats food
+            food.randomize_position()  # Generate new food position
 
-        surface.fill(BLACK)
-        snake.render(surface)
-        food.render(surface)
-        screen.blit(surface, (0, 0))
-        pygame.display.update()
-        clock.tick(FPS)
+        surface.fill(BLACK)  # Fill surface with black color
+        snake.render(surface)  # Render snake on the surface
+        food.render(surface)  # Render food on the surface
+        screen.blit(surface, (0, 0))  # Blit surface onto the screen
+        pygame.display.update()  # Update display
+        clock.tick(FPS)  # Cap FPS
 
 if __name__ == "__main__":
     main()
